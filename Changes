@@ -1,3 +1,7 @@
+Aaron Kaplan, Sep 2003, v 0.12
+. cleaned up style and usage in C to fit ANSI-C
+. contributed documentation
+
 Scott Walters, Feb 2002, v 0.11
 . tied interface to help reduce foot shooting and hoop jumping
 . hardwire() utility method

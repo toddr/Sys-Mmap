@@ -25,41 +25,43 @@ Mmap - uses mmap to map in a file as a Perl variable
 
 =head1 DESCRIPTION
 
-The Mmap module lets you use mmap to map in a file as a Perl variable
-rather than reading the file into dynamically allocated memory. It
-depends on your operating system supporting UNIX or POSIX.1b mmap, of
+The Mmap module uses the POSIX L<mmap> call to map in a file as a Perl variable.
+Memory access by mmap may be shared between threads or forked processes, and
+may be a disc file that has been mapped into memory.
+L<Sys::Mmap> depends on your operating system supporting UNIX or POSIX.1b mmap, of
 course. 
 
-The advantage of this is that several processes may share one copy
+Several processes may share one copy
 of the file or string, saving memory, and concurrently making changes to 
 portions of the file or string. When not used with a file, it is an
-alternative to SysV shared memory that places no arbitrary size limits on
-the shared memory area, and efficiently handles sparce memory usage on
+alternative to SysV shared memory. Unlike SysV shared memory, there 
+are no arbitrary size limits on
+the shared memory area, and sparce memory usage is handled optimally on
 most modern UNIX implementations.
 
-Using the new() method provides a tie()'d interface to mmap() that
+Using the C<new()> method provides a C<tie()>'d interface to C<mmap()> that
 allows you to use the variable as a normal variable. If a filename
-is provided, the file is open and mapped in. If the file is
-smaller then the length provided, the file is grown to that length.
+is provided, the file is opened and mapped in. If the file is
+smaller than the length provided, the file is grown to that length.
 If no filename is
-provided, anonymous shared inheritable memory is used.  Assigning to
+provided, anonymous shared inheritable memory is used. Assigning to
 the variable will replace a section in the file corresponding to
 the length of the variable, leaving the remainder of the file 
-intact and unmodified. Using substr() allows you to access 
-the file at an offset, but does not place any requirements on
+intact and unmodified. Using C<substr()> allows you to access 
+the file at an offset, and does not place any requirements on
 the length argument to substr() or the length of the variable
 being inserted, provided it does not exceed the length of the
 memory region. This protects you from the pathological cases
-involved in using mmap() directly.
+involved in using C<mmap()> directly, documented below.
 
-When calling mmap() or hardwire() directly,
-you need to be careful how you use such a variable. Some
+When calling C<mmap()> or C<hardwire()> directly,
+you need to be careful how you use the variable. Some
 programming constructs may create copies of a string which, while
 unimportant for smallish strings, are far less welcome if you're
 mapping in a file which is a few gigabytes big. If you use PROT_WRITE
 and attempt to write to the file via the variable you need to be even
 more careful. One of the few ways in which you can safely write to
-the string in-place is by using substr as an lvalue and ensuring that
+the string in-place is by using C<substr()> as an lvalue and ensuring that
 the part of the string that you replace is exactly the same length.
 Other functions will allocate other storage for the variable,
 and it will no longer overlay the mapped in file.
@@ -70,7 +72,7 @@ and it will no longer overlay the mapped in file.
 
 Maps LENGTH bytes of (the contents of) OPTIONALFILENAME if
 OPTINALFILENAME is provided, otherwise uses anonymous, shared
-inheritable memory. This memory region is inherited by any fork()'d
+inheritable memory. This memory region is inherited by any C<fork()>ed
 children. VARIABLE will now refer to the contents of that file.
 Any change to VARIABLE will make an identical change to the file.
 If LENGTH is zero and a file is specified, the current length of the
@@ -79,7 +81,7 @@ If LENGTH is larger then the file, and OPTIONALFILENAME is
 provided, the file is grown to that length before being mapped.
 This is the preferred interface, as it requires much less caution
 in handling the variable. VARIABLE will be tied into the "Mmap"
-package, and mmap() will be called for you.
+package, and C<mmap()> will be called for you.
 
 Assigning to VARIABLE will overwrite the beginning of the file
 for a length of the value being assigned in. The rest of the
@@ -122,11 +124,11 @@ munmap returns 1 on success and undef on failure.
 =item hardwire(VARIABLE, ADDRESS, LENGTH)
 
 Specifies the address in memory of a variable, possibly within a
-region you've mmap()'ed another variable to. You must use the
+region you've C<mmap()>ed another variable to. You must use the
 same percaustions to keep the variable from being reallocated,
-and use substr() with an exact length. If you munmap() a
-region that a hardwire()'d variable lives in, the hardwire()'d
-variable will not automatically be undef'd. You must do this
+and use C<substr()> with an exact length. If you C<munmap()> a
+region that a C<hardwire()>ed variable lives in, the C<hardwire()>ed
+variable will not automatically be C<undef>ed. You must do this
 manually.
 
 =item Constants
@@ -142,14 +144,20 @@ defined in POSIX.1b and only MAP_SHARED is likely to be useful.
 
 =head1 BUGS
 
-Scott Walters doesn't know XS, and is just winging it.
+Scott Walters doesn't know XS, and is just winging it. There must be a
+better way to tell Perl not to reallocate a variable in memory...
+
+The tie() interface makes writing to a substring of the variable
+much less efficient.  One user cited his application running 10-20 times slower when 
+"new Mmap" is used than when mmap() is called directly.
+
 Malcolm Beattie has not reviewed Scott's work and is not responsible for any
 bugs, errors, omissions, stylistic failings, importabilities, or design flaws
 in this version of the code.
 
 There should be a tied interface to hardwire() as well.
 
-Scott Walter's spelling is aweful.
+Scott Walter's spelling is awful.
 
 hardwire() will segfault Perl if the mmap() area it was
 refering to is munmap()'d out from under it.
@@ -160,7 +168,11 @@ mmap()'d previously, or if it has since been reallocated by Perl.
 =head1 AUTHOR
 
 Malcolm Beattie, 21 June 1996.
+
 Updated for Perl 5.6.x, additions, Scott Walters, Feb 2002.
+
+Aaron Kaplan kindly contributed patches to make the C ANSI
+compliant and contributed documentation as well.
 
 =cut
 
@@ -175,7 +187,7 @@ require Exporter;
 	     MAP_ANON MAP_ANONYMOUS MAP_FILE MAP_PRIVATE MAP_SHARED
 	     PROT_EXEC PROT_NONE PROT_READ PROT_WRITE);
 
-$VERSION = '0.11';
+$VERSION = '0.12';
 
 sub new {
 

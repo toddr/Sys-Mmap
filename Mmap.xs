@@ -133,7 +133,7 @@ hardwire(var, addr, len)
 	SvCUR_set(var, len);
 	SvLEN_set(var, 0);
 	SvPOK_only(var);
-        //printf("ok, that var is now stuck at addr %lx\n", addr);
+        /*printf("ok, that var is now stuck at addr %lx\n", addr);*/
         ST(0) = &PL_sv_yes;
 
 
@@ -154,7 +154,7 @@ mmap(var, len, prot, flags, fh = 0, off = 0)
         if(flags&MAP_ANON) {
           fd = -1;
           if (!len)  {
-              // i WANT to return undef and set $! but perlxs and perlxstut dont tell me how... waa!
+              /* i WANT to return undef and set $! but perlxs and perlxstut dont tell me how... waa! */
               croak("mmap: MAP_ANON specified, but no length specified. cannot infer length from file");
           }
         } else {
@@ -173,14 +173,14 @@ mmap(var, len, prot, flags, fh = 0, off = 0)
 
 	addr = mmap(0, len, prot, flags, fd, off);
 	if (addr == MAP_FAILED) {
-            croak("mmap: mmap call failed: errno: %d errmsg: %s ", errno, sys_errlist[errno]);
+            croak("mmap: mmap call failed: errno: %d errmsg: %s ", errno, strerror(errno));
         }
 
 	SvUPGRADE(var, SVt_PV);
 	if (!(prot & PROT_WRITE))
 	    SvREADONLY_on(var);
 
-        // would sv_usepvn() be cleaner/better/different? would still try to realloc...
+        /* would sv_usepvn() be cleaner/better/different? would still try to realloc... */
 	SvPVX(var) = (char *) addr;
 	SvCUR_set(var, len);
 	SvLEN_set(var, 0);
@@ -193,9 +193,9 @@ munmap(var)
     PROTOTYPE: $
     CODE:
 	ST(0) = &PL_sv_undef;
-        // XXX refrain from dumping core if this var wasnt previously mmap'd
+        /* XXX refrain from dumping core if this var wasnt previously mmap'd */
         if (munmap((MMAP_RETTYPE) SvPVX(var), SvCUR(var)) == -1) {
-            croak("munmap failed! errno %d %s\n", errno, sys_errlist[errno]);
+            croak("munmap failed! errno %d %s\n", errno, strerror(errno));
             return;
         }
         SvREADONLY_off(var);
@@ -210,9 +210,9 @@ DESTROY(var)
     SV *     var
     PROTOTYPE: $
     CODE:
-        // XXX refrain from dumping core if this var wasnt previously mmap'd
+        /* XXX refrain from dumping core if this var wasnt previously mmap'd*/
         if (munmap((MMAP_RETTYPE) SvPVX(var), SvCUR(var)) == -1) {
-            croak("munmap failed! errno %d %s\n", errno, sys_errlist[errno]);
+            croak("munmap failed! errno %d %s\n", errno, strerror(errno));
             return;
         }
         SvREADONLY_off(var);
@@ -220,5 +220,5 @@ DESTROY(var)
         SvCUR_set(var, 0);
         SvLEN_set(var, 0);
         SvOK_off(var);
-        // printf("destroy ran fine, thanks\n");
+        /* printf("destroy ran fine, thanks\n"); */
         ST(0) = &PL_sv_yes;

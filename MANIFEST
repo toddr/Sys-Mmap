@@ -8,3 +8,4 @@ Mmap.xs
 README
 typemap
 t/mmap.t
+META.yml                                Module meta-data (added by MakeMaker)
