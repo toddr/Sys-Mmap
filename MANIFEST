@@ -1,0 +1,10 @@
+Artistic
+Copying
+Changes
+MANIFEST
+Makefile.PL
+Mmap.pm
+Mmap.xs
+README
+typemap
+t/mmap.t
