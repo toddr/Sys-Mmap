@@ -1,3 +1,3 @@
 use ExtUtils::MakeMaker;
 
-WriteMakefile(NAME=>'Sys::Mmap', VERSION=>0.12);
+WriteMakefile(NAME=>'Sys::Mmap', VERSION=>0.13);

@@ -8,6 +8,7 @@ extern "C" {
 }
 #endif
 #include <sys/mman.h>
+#include <unistd.h>
 
 #ifndef MMAP_RETTYPE
 #define _POSIX_C_SOURCE 199309
@@ -110,6 +111,7 @@ not_there:
     return 0;
 }
 
+static size_t pagesize;
 
 
 MODULE = Sys::Mmap		PACKAGE = Sys::Mmap
@@ -147,6 +149,7 @@ mmap(var, len, prot, flags, fh = 0, off = 0)
 	off_t		off
 	int		fd = NO_INIT
 	MMAP_RETTYPE	addr = NO_INIT
+	off_t		slop = NO_INIT
     PROTOTYPE: $$$$*;$
     CODE:
 
@@ -171,7 +174,13 @@ mmap(var, len, prot, flags, fh = 0, off = 0)
 	  }
         }
 
-	addr = mmap(0, len, prot, flags, fd, off);
+	if (pagesize == 0) {
+	      pagesize = getpagesize();
+	}
+
+	slop = off % pagesize;
+
+	addr = mmap(0, len + slop, prot, flags, fd, off - slop);
 	if (addr == MAP_FAILED) {
             croak("mmap: mmap call failed: errno: %d errmsg: %s ", errno, strerror(errno));
         }
@@ -181,9 +190,9 @@ mmap(var, len, prot, flags, fh = 0, off = 0)
 	    SvREADONLY_on(var);
 
         /* would sv_usepvn() be cleaner/better/different? would still try to realloc... */
-	SvPVX(var) = (char *) addr;
+	SvPVX(var) = (char *) addr + slop;
 	SvCUR_set(var, len);
-	SvLEN_set(var, 0);
+	SvLEN_set(var, slop);
 	SvPOK_only(var);
         ST(0) = sv_2mortal(newSVnv((int) addr));
 
@@ -194,7 +203,7 @@ munmap(var)
     CODE:
 	ST(0) = &PL_sv_undef;
         /* XXX refrain from dumping core if this var wasnt previously mmap'd */
-        if (munmap((MMAP_RETTYPE) SvPVX(var), SvCUR(var)) == -1) {
+        if (munmap((MMAP_RETTYPE) SvPVX(var) - SvLEN(var), SvCUR(var) + SvLEN(var)) == -1) {
             croak("munmap failed! errno %d %s\n", errno, strerror(errno));
             return;
         }

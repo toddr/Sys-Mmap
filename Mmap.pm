@@ -31,6 +31,9 @@ may be a disc file that has been mapped into memory.
 L<Sys::Mmap> depends on your operating system supporting UNIX or POSIX.1b mmap, of
 course. 
 
+B<Note> that L<PerlIO> now defines a C<:mmap> tag and presents mmap'd files
+as regular files, if that is your cup of joe.
+
 Several processes may share one copy
 of the file or string, saving memory, and concurrently making changes to 
 portions of the file or string. When not used with a file, it is an
@@ -187,7 +190,7 @@ require Exporter;
 	     MAP_ANON MAP_ANONYMOUS MAP_FILE MAP_PRIVATE MAP_SHARED
 	     PROT_EXEC PROT_NONE PROT_READ PROT_WRITE);
 
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 sub new {
 
@@ -289,3 +292,6 @@ sub AUTOLOAD {
 bootstrap Sys::Mmap $VERSION;
 
 1;
+
+__END__
+
