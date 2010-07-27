@@ -180,7 +180,6 @@ compliant and contributed documentation as well.
 =cut
 
 use strict;
-use Carp;
 use vars qw($VERSION @ISA @EXPORT $AUTOLOAD);
 require DynaLoader;
 require Exporter;
@@ -282,7 +281,8 @@ sub AUTOLOAD {
 	    goto &AutoLoader::AUTOLOAD;
 	}
 	else {
-		croak "Your vendor has not defined Mmap macro $constname";
+	    require Carp;
+	    Carp::croak("Your vendor has not defined Mmap macro $constname");
 	}
     }
     eval "sub $AUTOLOAD { $val }";
@@ -294,4 +294,3 @@ bootstrap Sys::Mmap $VERSION;
 1;
 
 __END__
-
