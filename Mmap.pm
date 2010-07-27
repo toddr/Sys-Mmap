@@ -2,7 +2,7 @@ package Sys::Mmap;
 
 =head1 NAME
 
-Mmap - uses mmap to map in a file as a Perl variable
+Sys::Mmap - uses mmap to map in a file as a Perl variable
 
 =head1 SYNOPSIS
 
