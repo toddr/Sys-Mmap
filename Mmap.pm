@@ -180,10 +180,9 @@ compliant and contributed documentation as well.
 =cut
 
 use strict;
-use vars qw($VERSION @ISA @EXPORT $AUTOLOAD);
-require DynaLoader;
+our ($VERSION, @ISA, @EXPORT, $AUTOLOAD);
 require Exporter;
-@ISA = qw(Exporter DynaLoader);
+@ISA = qw(Exporter);
 
 @EXPORT = qw(mmap munmap
 	     MAP_ANON MAP_ANONYMOUS MAP_FILE MAP_PRIVATE MAP_SHARED
@@ -289,8 +288,16 @@ sub AUTOLOAD {
     goto &$AUTOLOAD;
 }
 
-bootstrap Sys::Mmap $VERSION;
+eval {
+       require XSLoader;
+       XSLoader::load( 'Sys::Mmap', $VERSION );
+} or do {
+    require DynaLoader;
+    push @ISA, 'DynaLoader';
+    bootstrap Sys::Mmap $VERSION;
+};
 
 1;
 
 __END__
+
