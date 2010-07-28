@@ -11,7 +11,9 @@ extern "C" {
 #include <unistd.h>
 
 #ifndef MMAP_RETTYPE
+#ifndef _POSIX_C_SOURCE
 #define _POSIX_C_SOURCE 199309
+#endif
 #ifdef _POSIX_VERSION
 #if _POSIX_VERSION >= 199309
 #define MMAP_RETTYPE void *
