@@ -1,11 +1,12 @@
 Artistic
-Copying
 Changes
-MANIFEST
+Copying
 Makefile.PL
+MANIFEST
+META.yml			Module meta-data (added by MakeMaker)
 Mmap.pm
 Mmap.xs
 README
-typemap
 t/mmap.t
-META.yml                                Module meta-data (added by MakeMaker)
+t/munmap_errors.t
+typemap

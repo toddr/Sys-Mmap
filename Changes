@@ -1,3 +1,14 @@
+Todd Rinaldo July 27 2010 v0.13_01
+* RT 59754 AUTOLOAD does quoted eval.
+* RT 59753 Mmap.xs:14:0: warning: "_POSIX_C_SOURCE" redefined
+* RT 15905 bug/segmentation fault on ia64 (altix)
+* RT 22615 munmap($unseen) segfaults
+* RT 59750 Update Makefile.PL to show Module dependencies.
+* RT 59749 use Test::More and test interface more thoroughly.
+* RT 59748 use XSLoader if possible for more lightweight load
+* RT 59747 Don't import Carp into module by default
+* update META.yml
+
 Aaron Kaplan, Sep 2003, v 0.12
 . cleaned up style and usage in C to fit ANSI-C
 . contributed documentation
