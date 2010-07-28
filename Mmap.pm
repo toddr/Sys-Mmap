@@ -271,20 +271,25 @@ sub AUTOLOAD {
     # XS function.  If a constant is not found then control is passed
     # to the AUTOLOAD in AutoLoader.
 
-    my $constname;
-    ($constname = $AUTOLOAD) =~ s/.*:://;
-    my $val = constant($constname, @_ ? $_[0] : 0);
-    if ($! != 0) {
-	if ($! =~ /Invalid/) {
-	    $AutoLoader::AUTOLOAD = $AUTOLOAD;
-	    goto &AutoLoader::AUTOLOAD;
-	}
-	else {
-	    require Carp;
-	    Carp::croak("Your vendor has not defined Mmap macro $constname");
-	}
+    if ($AUTOLOAD =~ /::(_?[a-z])/) {
+        $AutoLoader::AUTOLOAD = $AUTOLOAD;
+        goto &AutoLoader::AUTOLOAD;
     }
-    eval "sub $AUTOLOAD { $val }";
+
+    local $! = 0;
+    my $constname = $AUTOLOAD;
+    $constname =~ s/.*:://;
+    return if $constname eq 'DESTROY';
+    my $val = constant($constname, @_ ? $_[0] : 0);
+    if ($! == 0) {
+        no strict 'refs';
+        *$AUTOLOAD = sub { $val };
+    }
+    else {
+        require Carp;
+        Carp::croak("Your vendor has not defined Mmap macro $constname");
+    }
+
     goto &$AUTOLOAD;
 }
 
