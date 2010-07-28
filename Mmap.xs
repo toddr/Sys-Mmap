@@ -203,6 +203,11 @@ munmap(var)
     CODE:
 	ST(0) = &PL_sv_undef;
         /* XXX refrain from dumping core if this var wasnt previously mmap'd */
+        if(SvTYPE(var) != SVt_PV) {
+            croak("map pointer is not a stringundef");
+            return;
+        }
+
         if (munmap((MMAP_RETTYPE) SvPVX(var) - SvLEN(var), SvCUR(var) + SvLEN(var)) == -1) {
             croak("munmap failed! errno %d %s\n", errno, strerror(errno));
             return;
