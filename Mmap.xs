@@ -125,7 +125,7 @@ constant(name,arg)
 SV *
 hardwire(var, addr, len)
         SV *            var
-	unsigned int	addr
+	IV	addr
 	size_t		len
     PROTOTYPE: $$$
     CODE:
@@ -194,7 +194,7 @@ mmap(var, len, prot, flags, fh = 0, off = 0)
 	SvCUR_set(var, len);
 	SvLEN_set(var, slop);
 	SvPOK_only(var);
-        ST(0) = sv_2mortal(newSVnv((int) addr));
+        ST(0) = sv_2mortal(newSVnv((IV) addr));
 
 SV *
 munmap(var)
