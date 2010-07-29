@@ -205,8 +205,12 @@ munmap(var)
     CODE:
 	ST(0) = &PL_sv_undef;
         /* XXX refrain from dumping core if this var wasnt previously mmap'd */
-        if(SvTYPE(var) != SVt_PV) {
-            croak("map pointer is not a stringundef");
+	if(!SvOK(var)) { /* Detect if variable is undef */
+            croak("undef variable not unmappable");
+            return;
+	}
+	if(SvTYPE(var) != SVt_PV) {
+            croak("variable is not a string");
             return;
         }
 
