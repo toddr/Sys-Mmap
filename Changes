@@ -1,3 +1,12 @@
+Todd Rinaldo Sept 1 2010 v0.13_03
+* Skip unmapping of invalid variables on BSD kernels which
+  seem to segfault on this event.
+
+Todd Rinaldo July 29 2010 v0.13_02
+* Do a little better undef detection in the SV before trying
+  to blindly unmap it.
+* Add tests to detect these cases
+
 Todd Rinaldo July 27 2010 v0.13_01
 * RT 59754 AUTOLOAD does quoted eval.
 * RT 59753 Mmap.xs:14:0: warning: "_POSIX_C_SOURCE" redefined
