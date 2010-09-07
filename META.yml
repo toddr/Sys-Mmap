@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Sys-Mmap
-version:            0.13_01
+version:            0.14
 abstract:           uses mmap to map in a file as a Perl variable
 author:
     - Scott Walters <swalters@cpan.org>

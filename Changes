@@ -1,3 +1,6 @@
+Todd Rinaldo Sept 7 2010 v0.14
+* Tests look stable. Releasing prod version of module.
+
 Todd Rinaldo Sept 1 2010 v0.13_03
 * Skip unmapping of invalid variables on BSD kernels which
   seem to segfault on this event.
