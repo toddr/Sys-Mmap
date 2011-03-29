@@ -4,6 +4,7 @@ extern "C" {
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
+#include <stdlib.h>
 #ifdef __cplusplus
 }
 #endif
@@ -113,7 +114,14 @@ not_there:
     return 0;
 }
 
-static size_t pagesize;
+static size_t pagesize = 0;
+
+
+#if _FILE_OFFSET_BITS > 32
+#define get_off(a) (atoll(a))
+#else
+#define get_off(a) (atoi(a))
+#endif
 
 
 MODULE = Sys::Mmap		PACKAGE = Sys::Mmap
@@ -141,20 +149,33 @@ hardwire(var, addr, len)
         ST(0) = &PL_sv_yes;
 
 
+
 SV *
-mmap(var, len, prot, flags, fh = 0, off = 0)
+mmap(var, len, prot, flags, fh = 0, off_string)
 	SV *		var
 	size_t		len
 	int		prot
 	int		flags
 	FILE *		fh
-	off_t		off
+    SV *  off_string
 	int		fd = NO_INIT
 	MMAP_RETTYPE	addr = NO_INIT
 	off_t		slop = NO_INIT
+    off_t off = NO_INIT
     PROTOTYPE: $$$$*;$
     CODE:
 
+    if(!SvTRUE(off_string)) {
+        off = 0;
+    }
+    else {
+        off = get_off(SvPVbyte_nolen(off_string));
+    }
+    
+    if(off < 0) {
+        croak("mmap: Cannot operate on a negative offset (%s) ", SvPVbyte_nolen(off_string));
+    }
+    
 	ST(0) = &PL_sv_undef;
         if(flags&MAP_ANON) {
           fd = -1;
@@ -180,7 +201,7 @@ mmap(var, len, prot, flags, fh = 0, off = 0)
 	      pagesize = getpagesize();
 	}
 
-	slop = off % pagesize;
+    slop = (size_t) off % pagesize;
 
 	addr = mmap(0, len + slop, prot, flags, fd, off - slop);
 	if (addr == MAP_FAILED) {

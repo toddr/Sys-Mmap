@@ -1,3 +1,12 @@
+Todd Rinaldo March 29 2011 v0.14_01
+* Mmap could not handle files larger than 2GB if perl was not using 64bit int.
+  Resolved the problem by taking a string and converting it via atoll,
+  depending on _FILE_OFFSET_BITS > 32
+* Added test and fix to croak if a negative offset is passed in.
+* initialize global variable pagesize = 0 so it'll set right the first time
+* Remove typemap which was only used by mmap sub. Now we're using SV,
+  it's no longer an issue.
+
 Todd Rinaldo Sept 7 2010 v0.14
 * Tests look stable. Releasing prod version of module.
 

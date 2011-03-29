@@ -3,7 +3,7 @@
 BEGIN {
     use strict;
     use warnings;
-    use Test::More tests => 4;
+    use Test::More tests => 6;
 
     use_ok('Sys::Mmap');
 }
@@ -18,6 +18,10 @@ close FOO;
 
 my $foo;
 sysopen(FOO, $temp_file, O_RDONLY) or die "$temp_file: $!\n";
+# Test negative offsets fail.
+is(eval { mmap($foo, 0, PROT_READ, MAP_SHARED, FOO, -100); 1}, undef, "Negative seek fails.");
+like($@, qr/^\Qmmap: Cannot operate on a negative offset (-100)\E/, "croaks when negative offset is passed in"); 
+# Now map the file for real
 mmap($foo, 0, PROT_READ, MAP_SHARED, FOO);
 close FOO;
 
