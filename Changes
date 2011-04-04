@@ -1,3 +1,7 @@
+Todd Rinaldo April 4 2011 v0.15
+* cpantesters looks good besides Win32. Waiting for someone from windows
+  world to care/submit patch
+
 Todd Rinaldo March 29 2011 v0.14_01
 * Mmap could not handle files larger than 2GB if perl was not using 64bit int.
   Resolved the problem by taking a string and converting it via atoll,
