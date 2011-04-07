@@ -3,7 +3,7 @@
 BEGIN {
     use strict;
     use warnings;
-    use Test::More tests => 6;
+    use Test::More tests => 8;
 
     use_ok('Sys::Mmap');
 }
@@ -39,5 +39,16 @@ munmap($foo);
 sysopen(FOO, $temp_file, O_RDONLY) or die "$temp_file: $!\n";
 my $bar = <FOO>;
 is($bar, 'ABCZ1234', 'Altered foo reflects on disk');
+
+{
+    my $foo;
+    open(my $fh, "<", $temp_file) or die;
+    isa_ok($fh, 'GLOB');
+    mmap($foo, 0, PROT_READ, MAP_SHARED, $fh);
+    close $fh;
+    is($foo, 'ABCZ1234', 'Read $foo, when it comes from a FileHandle');
+    munmap($foo);
+}
+    
 
 unlink($temp_file);
