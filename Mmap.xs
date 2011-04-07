@@ -151,18 +151,17 @@ hardwire(var, addr, len)
 
 
 SV *
-mmap(var, len, prot, flags, fh = 0, off_string)
+_mmap(var, len, prot, flags, fd, off_string = &PL_sv_undef)
 	SV *		var
 	size_t		len
 	int		prot
 	int		flags
-	FILE *		fh
+	int    fd
     SV *  off_string
-	int		fd = NO_INIT
 	MMAP_RETTYPE	addr = NO_INIT
 	off_t		slop = NO_INIT
     off_t off = NO_INIT
-    PROTOTYPE: $$$$*;$
+    PROTOTYPE: $$$$$;$
     CODE:
 
     if(!SvTRUE(off_string)) {
@@ -171,11 +170,11 @@ mmap(var, len, prot, flags, fh = 0, off_string)
     else {
         off = get_off(SvPVbyte_nolen(off_string));
     }
-    
+
     if(off < 0) {
         croak("mmap: Cannot operate on a negative offset (%s) ", SvPVbyte_nolen(off_string));
     }
-    
+
 	ST(0) = &PL_sv_undef;
         if(flags&MAP_ANON) {
           fd = -1;
@@ -184,10 +183,7 @@ mmap(var, len, prot, flags, fh = 0, off_string)
               croak("mmap: MAP_ANON specified, but no length specified. cannot infer length from file");
           }
         } else {
-	  fd = fileno(fh);
-          if (fd < 0) {
-              croak("mmap: file not open or does not have associated fileno");
-          }
+
 	  if (!len) {
 	      struct stat st;
 	      if (fstat(fd, &st) == -1) {

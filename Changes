@@ -1,3 +1,8 @@
+Todd Rinaldo April 7 2011 v0.15_01
+* Add default the offset string to undef. Remove the fh default.
+* Croak if the fh is closed.
+* Test a closed file handle.
+
 Todd Rinaldo April 4 2011 v0.15
 * cpantesters looks good besides Win32. Waiting for someone from windows
   world to care/submit patch

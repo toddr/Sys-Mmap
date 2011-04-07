@@ -188,7 +188,7 @@ require Exporter;
 	     MAP_ANON MAP_ANONYMOUS MAP_FILE MAP_PRIVATE MAP_SHARED
 	     PROT_EXEC PROT_NONE PROT_READ PROT_WRITE);
 
-$VERSION = '0.15';
+$VERSION = '0.15_01';
 
 sub new {
 
@@ -301,6 +301,15 @@ eval {
     push @ISA, 'DynaLoader';
     bootstrap Sys::Mmap $VERSION;
 };
+
+sub mmap {
+    my $fh = $_[4] or die("Invalid file handle passed to mmap");
+    die("Ref== " . ref(\$fh) . "--");
+    die;
+    my $fd = fileno($fh);
+    defined $fd  && $fd >= 0 or die("not a valid file descriptor passed to mmap");
+    return _mmap($_[0], $_[1], $_[2], $_[3], $fd, $_[5]);
+}
 
 1;
 
