@@ -12,8 +12,9 @@ use FileHandle;
 
 $temp_file = "mmap.tmp";
 
+my $temp_file_contents = "ABCD1234" x 1000; 
 sysopen(FOO, $temp_file, O_WRONLY|O_CREAT|O_TRUNC) or die "$temp_file: $!\n";
-print FOO "ABCD1234";
+print FOO $temp_file_contents;
 close FOO;
 
 my $foo;
@@ -25,7 +26,7 @@ like($@, qr/^\Qmmap: Cannot operate on a negative offset (-100)\E/, "croaks when
 mmap($foo, 0, PROT_READ, MAP_SHARED, FOO);
 close FOO;
 
-is($foo, 'ABCD1234', "RO access to the file produces valid data");
+is($foo, $temp_file_contents, "RO access to the file produces valid data");
 munmap($foo);
 
 sysopen(FOO, $temp_file, O_RDWR) or die "$temp_file: $!\n";
@@ -33,20 +34,21 @@ mmap($foo, 0, PROT_READ|PROT_WRITE, MAP_SHARED, FOO);
 close FOO;
 
 substr($foo, 3, 1) = "Z";
-is($foo, 'ABCZ1234', 'Foo can be altered in RW mode');
+substr($temp_file_contents, 3, 1) = "Z";
+is($foo, $temp_file_contents, 'Foo can be altered in RW mode');
 munmap($foo);
 
 sysopen(FOO, $temp_file, O_RDONLY) or die "$temp_file: $!\n";
 my $bar = <FOO>;
-is($bar, 'ABCZ1234', 'Altered foo reflects on disk');
+is($bar, $temp_file_contents, 'Altered foo reflects on disk');
 
 {
     my $foo;
+    my $file_size = -s $temp_file;
     open(my $fh, "<", $temp_file) or die;
     isa_ok($fh, 'GLOB');
-    mmap($foo, 0, PROT_READ, MAP_SHARED, $fh);
-    close $fh;
-    is($foo, 'ABCZ1234', 'Read $foo, when it comes from a FileHandle');
+    mmap($foo, $file_size, &Sys::Mmap::PROT_READ, &Sys::Mmap::MAP_SHARED, $fh);
+    is($foo, $temp_file_contents, 'Read $foo, when it comes from a FileHandle');
     munmap($foo);
 }
     
