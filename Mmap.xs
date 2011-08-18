@@ -151,7 +151,7 @@ hardwire(var, addr, len)
 
 
 SV *
-mmap(var, len, prot, flags, fh = 0, off_string = &PL_sv_undef)
+mmap(var, len, prot, flags, fh = 0, off_string)
 	SV *		var
 	size_t		len
 	int		prot
