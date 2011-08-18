@@ -1,3 +1,6 @@
+Todd Rinaldo August 18 2011 v0.15_02
+* Pause blocked.
+
 Todd Rinaldo August 18 2011 v0.15_01
 * Patch from RT 70333 (Syohei YOSHIDA) to make error testing locale neutral
 * Add test for GLOB mmap
