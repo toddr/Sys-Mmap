@@ -1,3 +1,8 @@
+Todd Rinaldo August 18 2011 v0.15_01
+* Patch from RT 70333 (Syohei YOSHIDA) to make error testing locale neutral
+* Add test for GLOB mmap
+* Make temp file larger for testing additional cases.
+
 Todd Rinaldo April 4 2011 v0.15
 * cpantesters looks good besides Win32. Waiting for someone from windows
   world to care/submit patch

@@ -5,6 +5,7 @@ use warnings;
 use Test::More tests => 14;
 
 use Sys::Mmap;
+use Errno qw(EINVAL);
 
 {
     my $foo;
@@ -28,7 +29,7 @@ SKIP: {
     skip "BSD kernels can't unmap a bad pointer like linux kernels can", 4 if($^O =~ m/bsd/i || $^O =~ m/darwin/i);
     foreach my $foo ("", "1234", "1.232", "abcdefg" ){
 	eval {munmap($foo)};
-	is($@, "munmap failed! errno 22 Invalid argument\n", "Unmapped strings die");
+	ok($! == EINVAL, "Unmapped strings die");
     }
 }
 
