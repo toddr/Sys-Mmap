@@ -1,3 +1,7 @@
+Todd Rinaldo August 19 2011 v0.16
+* Testing looks stable on all major perl versions and distros.
+* Release with only version bump
+
 Todd Rinaldo August 18 2011 v0.15_02
 * Pause blocked.
 

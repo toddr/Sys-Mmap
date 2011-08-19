@@ -19,6 +19,7 @@ WriteMakefile(
     META_MERGE  => {
         build_requires => {
             'Test::More' => 0,  # For testing
+	    'Errno' => 0, # Locale independant failure validation.
         },
         resources => {
             license => 'http://dev.perl.org/licenses/',
