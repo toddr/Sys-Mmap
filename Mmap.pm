@@ -170,12 +170,11 @@ mmap()'d previously, or if it has since been reallocated by Perl.
 
 =head1 AUTHOR
 
+Todd Rinaldo cleaned up code, modernized again, and merged in many fixes, 2010-2011.
+
+Scott Walters updated for Perl 5.6.x, additions, 2002.
+
 Malcolm Beattie, 21 June 1996.
-
-Updated for Perl 5.6.x, additions, Scott Walters, Feb 2002.
-
-Aaron Kaplan kindly contributed patches to make the C ANSI
-compliant and contributed documentation as well.
 
 =cut
 

@@ -76,6 +76,12 @@ int arg;
 #else
 	    goto not_there;
 #endif
+        if (strEQ(name, "MAP_LOCKED"))
+#ifdef MAP_LOCKED
+            return MAP_LOCKED;
+#else
+            goto not_there;
+#endif
 	break;
     case 'P':
 	if (strEQ(name, "PROT_EXEC"))
@@ -208,6 +214,12 @@ mmap(var, len, prot, flags, fh = 0, off_string)
             croak("mmap: mmap call failed: errno: %d errmsg: %s ", errno, strerror(errno));
         }
 
+#if PERL_VERSION >= 20
+        if (SvIsCOW(var)) {
+            sv_force_normal_flags(var, 0);
+        }
+#endif
+
 	SvUPGRADE(var, SVt_PV);
 	if (!(prot & PROT_WRITE))
 	    SvREADONLY_on(var);
@@ -230,8 +242,8 @@ munmap(var)
             croak("undef variable not unmappable");
             return;
 	}
-	if(SvTYPE(var) != SVt_PV) {
-            croak("variable is not a string");
+        if(SvTYPE(var) < SVt_PV || SvTYPE(var) > SVt_PVMG) {
+           croak("variable is not a string, type is: %d", SvTYPE(var));
             return;
         }
 
