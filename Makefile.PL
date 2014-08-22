@@ -24,7 +24,7 @@ WriteMakefile(
         resources => {
             license => 'http://dev.perl.org/licenses/',
             homepage => 'http://wiki.github.com/toddr/Sys-Mmap',
-#            bugtracker => 'http://code.google.com/p/Sys-Mmap/issues/list',
+            bugtracker => 'https://github.com/toddr/Sys-Mmap/issues',
             repository => 'http://github.com/toddr/Sys-Mmap/tree/master',
 #            MailingList => 'http://groups.google.com/group/Sys-Mmap',
         },
