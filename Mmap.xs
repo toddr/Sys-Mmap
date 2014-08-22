@@ -208,6 +208,12 @@ mmap(var, len, prot, flags, fh = 0, off_string)
             croak("mmap: mmap call failed: errno: %d errmsg: %s ", errno, strerror(errno));
         }
 
+#if PERL_VERSION >= 20
+        if (SvIsCOW(var)) {
+            sv_force_normal_flags(var, 0);
+        }
+#endif
+
 	SvUPGRADE(var, SVt_PV);
 	if (!(prot & PROT_WRITE))
 	    SvREADONLY_on(var);
