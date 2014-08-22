@@ -8,3 +8,5 @@
 /MYMETA.json
 /MYMETA.yml
 /Sys-Mmap-0*
+/*.orig
+/*.rej
