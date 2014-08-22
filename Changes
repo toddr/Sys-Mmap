@@ -2,6 +2,7 @@ Todd Rinaldo August 22 2014 v0.17_01
 * Track fixes in github now all issues are cleared from RT
   https://github.com/toddr/Sys-Mmap/issues
 * Turn off homepage in META since there really isn't one.
+* Minor fix to COW patch related to XS spacing.
 
 Scott Walters, August 21 2014, v0.17_01
 * RT 91483 - croak("variable is not a string") was hitting because it was being

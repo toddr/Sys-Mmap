@@ -213,8 +213,8 @@ mmap(var, len, prot, flags, fh = 0, off_string)
 	if (addr == MAP_FAILED) {
             croak("mmap: mmap call failed: errno: %d errmsg: %s ", errno, strerror(errno));
         }
-
 #if PERL_VERSION >= 20
+
         if (SvIsCOW(var)) {
             sv_force_normal_flags(var, 0);
         }
