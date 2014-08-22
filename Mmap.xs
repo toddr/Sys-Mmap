@@ -230,8 +230,8 @@ munmap(var)
             croak("undef variable not unmappable");
             return;
 	}
-	if(SvTYPE(var) != SVt_PV) {
-            croak("variable is not a string");
+        if(SvTYPE(var) < SVt_PV || SvTYPE(var) > SVt_PVMG) {
+           croak("variable is not a string, type is: %d", SvTYPE(var));
             return;
         }
 
