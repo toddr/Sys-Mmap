@@ -76,6 +76,12 @@ int arg;
 #else
 	    goto not_there;
 #endif
+        if (strEQ(name, "MAP_LOCKED"))
+#ifdef MAP_LOCKED
+            return MAP_LOCKED;
+#else
+            goto not_there;
+#endif
 	break;
     case 'P':
 	if (strEQ(name, "PROT_EXEC"))
