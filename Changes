@@ -1,3 +1,15 @@
+Todd Rinaldo August 22 2014 v0.17_01
+* Track fixes in github now all issues are cleared from RT
+  https://github.com/toddr/Sys-Mmap/issues
+* Turn off homepage in META since there really isn't one.
+
+Scott Walters, August 21 2014, v0.17_01
+* RT 91483 - croak("variable is not a string") was hitting because it was being
+  too selective with SV type for modern perls.
+* RT 96043 - Updates to fix perl 5.20 COW issues
+* RT 96043 - Add MAP_LOCKED flag
+* Update contributors docs.
+
 Todd Rinaldo August 19 2011 v0.16
 * Testing looks stable on all major perl versions and distros.
 * Release with only version bump
