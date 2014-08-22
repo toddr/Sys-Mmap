@@ -1,29 +1,30 @@
---- #YAML:1.0
-name:               Sys-Mmap
-version:            0.14
-abstract:           uses mmap to map in a file as a Perl variable
+---
+abstract: 'uses mmap to map in a file as a Perl variable'
 author:
-    - Scott Walters <swalters@cpan.org>
-license:            perl
-distribution_type:  module
-configure_requires:
-    ExtUtils::MakeMaker:  0
+  - 'Scott Walters <swalters@cpan.org>'
 build_requires:
-    ExtUtils::MakeMaker:  0
-    Test::More:           0
-requires:
-    DynaLoader:  0
-    Test::More:  0
-    XSLoader:    0
-resources:
-    homepage:    http://wiki.github.com/toddr/Sys-Mmap
-    license:     http://dev.perl.org/licenses/
-    repository:  http://github.com/toddr/Sys-Mmap/tree/master
-no_index:
-    directory:
-        - t
-        - inc
-generated_by:       ExtUtils::MakeMaker version 6.56
+  Errno: '0'
+  ExtUtils::MakeMaker: '0'
+  Test::More: '0'
+configure_requires:
+  ExtUtils::MakeMaker: '0'
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 6.94, CPAN::Meta::Converter version 2.140640'
+license: perl
 meta-spec:
-    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
-    version:  1.4
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: Sys-Mmap
+no_index:
+  directory:
+    - t
+    - inc
+requires:
+  DynaLoader: '0'
+  Test::More: '0'
+  XSLoader: '0'
+resources:
+  bugtracker: https://github.com/toddr/Sys-Mmap/issues
+  license: http://dev.perl.org/licenses/
+  repository: http://github.com/toddr/Sys-Mmap/tree/master
+version: 0.17_01
