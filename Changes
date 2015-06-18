@@ -1,3 +1,6 @@
+Tim Aerts June 18 2015 v0.17_01
+* add MAP_NORESERVE flag
+
 Todd Rinaldo August 22 2014 v0.17_01
 * Track fixes in github now all issues are cleared from RT
   https://github.com/toddr/Sys-Mmap/issues
