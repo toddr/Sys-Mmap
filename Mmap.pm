@@ -25,11 +25,11 @@ Sys::Mmap - uses mmap to map in a file as a Perl variable
 
 =head1 DESCRIPTION
 
-The Mmap module uses the POSIX L<mmap> call to map in a file as a Perl
-variable.  Memory access by mmap may be shared between threads or forked
-processes, and may be a disc file that has been mapped into memory.
-L<Sys::Mmap> depends on your operating system supporting UNIX or POSIX.1b mmap,
-of course.
+The Sys::Mmap module uses the POSIX L<mmap|https://en.wikipedia.org/wiki/Mmap> call
+to map in a file as a Perl variable.  Memory access by mmap may be shared
+between threads or forked processes, and may be a disc file that has been
+mapped into memory.  L<Sys::Mmap> depends on your operating system supporting
+UNIX or POSIX.1b mmap, of course.
 
 B<Note> that L<PerlIO> now defines a C<:mmap> tag and presents mmap'd files as
 regular files, if that is your cup of joe.
@@ -48,7 +48,7 @@ anonymous shared inheritable memory is used. Assigning to the variable will
 replace a section in the file corresponding to the length of the variable,
 leaving the remainder of the file intact and unmodified. Using C<substr()>
 allows you to access the file at an offset, and does not place any requirements
-on the length argument to substr() or the length of the variable being
+on the length argument to C<substr()> or the length of the variable being
 inserted, provided it does not exceed the length of the memory region. This
 protects you from the pathological cases involved in using C<mmap()> directly,
 documented below.
@@ -56,7 +56,7 @@ documented below.
 When calling C<mmap()> or C<hardwire()> directly, you need to be careful how
 you use the variable. Some programming constructs may create copies of a string
 which, while unimportant for smallish strings, are far less welcome if you're
-mapping in a file which is a few gigabytes big. If you use PROT_WRITE and
+mapping in a file which is a few gigabytes big. If you use C<PROT_WRITE> and
 attempt to write to the file via the variable you need to be even more careful.
 One of the few ways in which you can safely write to the string in-place is by
 using C<substr()> as an lvalue and ensuring that the part of the string that
@@ -88,25 +88,26 @@ position:
 
 =item mmap(VARIABLE, LENGTH, PROTECTION, FLAGS, FILEHANDLE, OFFSET)
 
-Maps LENGTH bytes of (the underlying contents of) FILEHANDLE into your address
-space, starting at offset OFFSET and makes VARIABLE refer to that memory. The
-OFFSET argument can be omitted in which case it defaults to zero. The LENGTH
-argument can be zero in which case a stat is done on FILEHANDLE and the size of
-the underlying file is used instead.
+Maps C<LENGTH> bytes of (the underlying contents of) C<FILEHANDLE> into your
+address space, starting at offset C<OFFSET> and makes C<VARIABLE> refer to that
+memory. The C<OFFSET> argument can be omitted in which case it defaults to
+zero. The C<LENGTH> argument can be zero in which case a stat is done on
+C<FILEHANDLE> and the size of the underlying file is used instead.
 
-The PROTECTION argument should be some ORed combination of the constants
-PROT_READ, PROT_WRITE and PROT_EXEC or else PROT_NONE. The constants PROT_EXEC
-and PROT_NONE are unlikely to be useful here but are included for completeness.
+The C<PROTECTION> argument should be some ORed combination of the constants
+C<PROT_READ>, C<PROT_WRITE> and C<PROT_EXEC>, or else C<PROT_NONE>. The
+constants C<PROT_EXEC> and C<PROT_NONE> are unlikely to be useful here but are
+included for completeness.
 
-The FLAGS argument must include either MAP_SHARED or MAP_PRIVATE (the latter is
-unlikely to be useful here).  If your platform supports it, you may also use
-MAP_ANON or MAP_ANONYMOUS.  If your platform supplies MAP_FILE as a non-zero
-constant (necessarily non-POSIX) then you should also include that in FLAGS.
-POSIX.1b does not specify MAP_FILE as a FLAG argument and most if not all
-versions of Unix have MAP_FILE as zero.
+The C<FLAGS> argument must include either C<MAP_SHARED> or C<MAP_PRIVATE> (the
+latter is unlikely to be useful here).  If your platform supports it, you may
+also use C<MAP_ANON> or C<MAP_ANONYMOUS>.  If your platform supplies
+C<MAP_FILE> as a non-zero constant (necessarily non-POSIX) then you should also
+include that in C<FLAGS>.  POSIX.1b does not specify C<MAP_FILE> as a C<FLAG>
+argument and most if not all versions of Unix have C<MAP_FILE> as zero.
 
-mmap returns undef on failure, and the address in memory where the variable was
-mapped to on success.
+mmap returns C<undef> on failure, and the address in memory where the variable
+was mapped to on success.
 
 =item munmap(VARIABLE)
 
@@ -126,13 +127,13 @@ manually.
 
 =item Constants
 
-The Mmap module exports the following constants into your namespace:
+The Sys::Mmap module exports the following constants into your namespace:
 
     MAP_SHARED MAP_PRIVATE MAP_ANON MAP_ANONYMOUS MAP_FILE
     PROT_EXEC PROT_NONE PROT_READ PROT_WRITE
 
-Of the constants beginning MAP_, only MAP_SHARED and MAP_PRIVATE are
-defined in POSIX.1b and only MAP_SHARED is likely to be useful.
+Of the constants beginning with C<MAP_>, only C<MAP_SHARED> and C<MAP_PRIVATE>
+are defined in POSIX.1b and only C<MAP_SHARED> is likely to be useful.
 
 =back
 
@@ -141,22 +142,22 @@ defined in POSIX.1b and only MAP_SHARED is likely to be useful.
 Scott Walters doesn't know XS, and is just winging it. There must be a better
 way to tell Perl not to reallocate a variable in memory...
 
-The tie() interface makes writing to a substring of the variable much less
+The C<tie()> interface makes writing to a substring of the variable much less
 efficient.  One user cited his application running 10-20 times slower when C<<
-Sys::Mmap->new() >> is used than when mmap() is called directly.
+Sys::Mmap->new() >> is used than when C<mmap()> is called directly.
 
 Malcolm Beattie has not reviewed Scott's work and is not responsible for any
 bugs, errors, omissions, stylistic failings, importabilities, or design flaws
 in this version of the code.
 
-There should be a tied interface to hardwire() as well.
+There should be a tied interface to C<hardwire()> as well.
 
 Scott Walter's spelling is awful.
 
-hardwire() will segfault Perl if the mmap() area it was
-refering to is munmap()'d out from under it.
+C<hardwire()> will segfault Perl if the C<mmap()> area it was refering to is
+C<munmap()>'d out from under it.
 
-munmap() will segfault Perl if the variable was not successfully mmap()'d
+C<munmap()> will segfault Perl if the variable was not successfully C<mmap()>'d
 previously, or if it has since been reallocated by Perl.
 
 =head1 AUTHOR
@@ -184,7 +185,7 @@ $VERSION = '0.17_01';
 sub new {
 
   if(scalar @_ < 3) {
-    warn 'Usage: new Mmap $var, $desiredSize, $optFile;';
+    warn 'Usage: Sys::Mmap->new( $var, $desiredSize, $optFile );';
     return undef;
   }
 
@@ -278,7 +279,7 @@ sub AUTOLOAD {
     }
     else {
         require Carp;
-        Carp::croak("Your vendor has not defined Mmap macro $constname");
+        Carp::croak("Your vendor has not defined Sys::Mmap macro $constname");
     }
 
     goto &$AUTOLOAD;
