@@ -14,7 +14,7 @@ Sys::Mmap - uses mmap to map in a file as a Perl variable
     mmap($foo, 0, PROT_READ, MAP_SHARED, FILEHANDLE) or die "mmap: $!";
     @tags = $foo =~ /<(.*?)>/g;
     munmap($foo) or die "munmap: $!";
-    
+
     mmap($bar, 8192, PROT_READ|PROT_WRITE, MAP_SHARED, FILEHANDLE);
     substr($bar, 1024, 11) = "Hello world";
 
@@ -29,15 +29,15 @@ The Mmap module uses the POSIX L<mmap> call to map in a file as a Perl variable.
 Memory access by mmap may be shared between threads or forked processes, and
 may be a disc file that has been mapped into memory.
 L<Sys::Mmap> depends on your operating system supporting UNIX or POSIX.1b mmap, of
-course. 
+course.
 
 B<Note> that L<PerlIO> now defines a C<:mmap> tag and presents mmap'd files
 as regular files, if that is your cup of joe.
 
 Several processes may share one copy
-of the file or string, saving memory, and concurrently making changes to 
+of the file or string, saving memory, and concurrently making changes to
 portions of the file or string. When not used with a file, it is an
-alternative to SysV shared memory. Unlike SysV shared memory, there 
+alternative to SysV shared memory. Unlike SysV shared memory, there
 are no arbitrary size limits on
 the shared memory area, and sparce memory usage is handled optimally on
 most modern UNIX implementations.
@@ -49,8 +49,8 @@ smaller than the length provided, the file is grown to that length.
 If no filename is
 provided, anonymous shared inheritable memory is used. Assigning to
 the variable will replace a section in the file corresponding to
-the length of the variable, leaving the remainder of the file 
-intact and unmodified. Using C<substr()> allows you to access 
+the length of the variable, leaving the remainder of the file
+intact and unmodified. Using C<substr()> allows you to access
 the file at an offset, and does not place any requirements on
 the length argument to substr() or the length of the variable
 being inserted, provided it does not exceed the length of the
@@ -150,7 +150,7 @@ Scott Walters doesn't know XS, and is just winging it. There must be a
 better way to tell Perl not to reallocate a variable in memory...
 
 The tie() interface makes writing to a substring of the variable
-much less efficient.  One user cited his application running 10-20 times slower when 
+much less efficient.  One user cited his application running 10-20 times slower when
 C<< Sys::Mmap->new() >> is used than when mmap() is called directly.
 
 Malcolm Beattie has not reviewed Scott's work and is not responsible for any
@@ -215,7 +215,7 @@ sub TIESCALAR {
   my $fh;
 
   my $type = shift;
-  my $leng = shift; 
+  my $leng = shift;
   my $file = shift;
 
   my $flags = constant('MAP_INHERIT',0)|
@@ -242,7 +242,7 @@ sub TIESCALAR {
   my $addr = mmap(
       $me,
       $leng,
-      constant('PROT_READ',0)|constant('PROT_WRITE',0), 
+      constant('PROT_READ',0)|constant('PROT_WRITE',0),
       $flags,
       $file ? $fh : *main::STDOUT
   ) or die $!;
