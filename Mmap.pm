@@ -39,7 +39,7 @@ of the file or string, saving memory, and concurrently making changes to
 portions of the file or string. When not used with a file, it is an
 alternative to SysV shared memory. Unlike SysV shared memory, there
 are no arbitrary size limits on
-the shared memory area, and sparce memory usage is handled optimally on
+the shared memory area, and sparse memory usage is handled optimally on
 most modern UNIX implementations.
 
 Using the C<new()> method provides a C<tie()>'d interface to C<mmap()> that
@@ -127,7 +127,7 @@ munmap returns 1 on success and undef on failure.
 
 Specifies the address in memory of a variable, possibly within a
 region you've C<mmap()>ed another variable to. You must use the
-same percaustions to keep the variable from being reallocated,
+same precautions to keep the variable from being reallocated,
 and use C<substr()> with an exact length. If you C<munmap()> a
 region that a C<hardwire()>ed variable lives in, the C<hardwire()>ed
 variable will not automatically be C<undef>ed. You must do this
