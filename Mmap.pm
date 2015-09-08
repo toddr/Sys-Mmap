@@ -8,8 +8,8 @@ Sys::Mmap - uses mmap to map in a file as a Perl variable
 
     use Sys::Mmap;
 
-    new Mmap $str, 8192, 'structtest2.pl' or die $!;
-    new Mmap $var, 8192 or die $!;
+    Sys::Mmap->new(my $str, 8192, 'structtest2.pl') or die $!;
+    Sys::Mmap->new($var, 8192) or die $!;
 
     mmap($foo, 0, PROT_READ, MAP_SHARED, FILEHANDLE) or die "mmap: $!";
     @tags = $foo =~ /<(.*?)>/g;
@@ -71,22 +71,21 @@ and it will no longer overlay the mapped in file.
 
 =over 4
 
-=item new Mmap VARIABLE, LENGTH, OPTIONALFILENAME
+=item Sys::Mmap->new( C<VARIABLE>, C<LENGTH>, C<OPTIONALFILENAME> )
 
-Maps LENGTH bytes of (the contents of) OPTIONALFILENAME if
-OPTINALFILENAME is provided, otherwise uses anonymous, shared
+Maps C<LENGTH> bytes of (the contents of) C<OPTIONALFILENAME> if
+C<OPTIONALFILENAME> is provided, otherwise uses anonymous, shared
 inheritable memory. This memory region is inherited by any C<fork()>ed
-children. VARIABLE will now refer to the contents of that file.
-Any change to VARIABLE will make an identical change to the file.
-If LENGTH is zero and a file is specified, the current length of the
-file will be used.
-If LENGTH is larger then the file, and OPTIONALFILENAME is
-provided, the file is grown to that length before being mapped.
-This is the preferred interface, as it requires much less caution
-in handling the variable. VARIABLE will be tied into the "Mmap"
+children. C<VARIABLE> will now refer to the contents of that file.  Any
+change to C<VARIABLE> will make an identical change to the file.  If
+C<LENGTH> is zero and a file is specified, the current length of the file
+will be used.  If C<LENGTH> is larger then the file, and
+C<OPTIONALFILENAME> is provided, the file is grown to that length before
+being mapped.  This is the preferred interface, as it requires much less
+caution in handling the variable. C<VARIABLE> will be tied into the "Mmap"
 package, and C<mmap()> will be called for you.
 
-Assigning to VARIABLE will overwrite the beginning of the file
+Assigning to C<VARIABLE> will overwrite the beginning of the file
 for a length of the value being assigned in. The rest of the
 file or memory region after that point will be left intact.
 You may use substr() to assign at a given position:
@@ -152,7 +151,7 @@ better way to tell Perl not to reallocate a variable in memory...
 
 The tie() interface makes writing to a substring of the variable
 much less efficient.  One user cited his application running 10-20 times slower when 
-"new Mmap" is used than when mmap() is called directly.
+C<< Sys::Mmap->new() >> is used than when mmap() is called directly.
 
 Malcolm Beattie has not reviewed Scott's work and is not responsible for any
 bugs, errors, omissions, stylistic failings, importabilities, or design flaws
