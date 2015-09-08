@@ -74,23 +74,23 @@ and it will no longer overlay the mapped in file.
 =item Sys::Mmap->new( C<VARIABLE>, C<LENGTH>, C<OPTIONALFILENAME> )
 
 Maps C<LENGTH> bytes of (the contents of) C<OPTIONALFILENAME> if
-C<OPTIONALFILENAME> is provided, otherwise uses anonymous, shared
-inheritable memory. This memory region is inherited by any C<fork()>ed
-children. C<VARIABLE> will now refer to the contents of that file.  Any
-change to C<VARIABLE> will make an identical change to the file.  If
-C<LENGTH> is zero and a file is specified, the current length of the file
-will be used.  If C<LENGTH> is larger then the file, and
-C<OPTIONALFILENAME> is provided, the file is grown to that length before
-being mapped.  This is the preferred interface, as it requires much less
-caution in handling the variable. C<VARIABLE> will be tied into the "Mmap"
-package, and C<mmap()> will be called for you.
+C<OPTIONALFILENAME> is provided, otherwise uses anonymous, shared inheritable
+memory. This memory region is inherited by any C<fork()>ed children.
+C<VARIABLE> will now refer to the contents of that file.  Any change to
+C<VARIABLE> will make an identical change to the file.  If C<LENGTH> is zero
+and a file is specified, the current length of the file will be used.  If
+C<LENGTH> is larger then the file, and C<OPTIONALFILENAME> is provided, the
+file is grown to that length before being mapped.  This is the preferred
+interface, as it requires much less caution in handling the variable.
+C<VARIABLE> will be tied into the "Sys::Mmap" package, and C<mmap()> will be
+called for you.
 
 Assigning to C<VARIABLE> will overwrite the beginning of the file
 for a length of the value being assigned in. The rest of the
 file or memory region after that point will be left intact.
-You may use substr() to assign at a given position:
+You may use C<substr()> to assign at a given position:
 
-substr(VARIABLE, POSITION, LENGTH) = NEWVALUE
+    substr(VARIABLE, POSITION, LENGTH) = NEWVALUE
 
 =item mmap(VARIABLE, LENGTH, PROTECTION, FLAGS, FILEHANDLE, OFFSET)
 
@@ -207,7 +207,7 @@ sub TIESCALAR {
 
   if(scalar @_ < 2) {
     # print "debug: got args: ", join ', ', @_, "\n";
-    warn 'Usage: tie $var, "Mmap", $desiredSize, $optionalFile;';
+    warn 'Usage: tie $var, "Sys::Mmap", $desiredSize, $optionalFile;';
     return undef;
   }
 
