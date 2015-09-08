@@ -8,20 +8,20 @@ Sys::Mmap - uses mmap to map in a file as a Perl variable
 
     use Sys::Mmap;
 
-    Sys::Mmap->new(my $str, 8192, 'structtest2.pl') or die $!;
-    Sys::Mmap->new($var, 8192) or die $!;
+    Sys::Mmap->new( my $str, 8192, 'structtest2.pl' ) or die $!;
+    Sys::Mmap->new( $var, 8192 ) or die $!;
 
-    mmap($foo, 0, PROT_READ, MAP_SHARED, FILEHANDLE) or die "mmap: $!";
+    mmap( $foo, 0, PROT_READ, MAP_SHARED, FILEHANDLE ) or die "mmap: $!";
     @tags = $foo =~ /<(.*?)>/g;
     munmap($foo) or die "munmap: $!";
 
-    mmap($bar, 8192, PROT_READ|PROT_WRITE, MAP_SHARED, FILEHANDLE);
-    substr($bar, 1024, 11) = "Hello world";
+    mmap( $bar, 8192, PROT_READ | PROT_WRITE, MAP_SHARED, FILEHANDLE );
+    substr( $bar, 1024, 11 ) = "Hello world";
 
-    mmap($baz, 8192, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANON, STDOUT);
+    mmap( $baz, 8192, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANON, STDOUT );
 
-    $addr = mmap($baz, 8192, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANON, STDOUT);
-    Sys::Mmap::hardwire($qux, $addr, 8192);
+    $addr = mmap( $baz, 8192, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANON, STDOUT );
+    Sys::Mmap::hardwire( $qux, $addr, 8192 );
 
 =head1 DESCRIPTION
 
