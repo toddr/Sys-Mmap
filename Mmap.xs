@@ -224,12 +224,13 @@ mmap(var, len, prot, flags, fh = 0, off_string)
 	if (!(prot & PROT_WRITE))
 	    SvREADONLY_on(var);
 
-        /* would sv_usepvn() be cleaner/better/different? would still try to realloc... */
-	SvPVX(var) = (char *) addr + slop;
-	SvCUR_set(var, len);
-	SvLEN_set(var, slop);
+	SvPVX(var) = (char *) addr;
+	SvCUR_set(var, len + slop);
+	if (slop > 0) {
+		sv_chop(var, addr + slop);
+	}
 	SvPOK_only(var);
-        ST(0) = sv_2mortal(newSVnv((IV) addr));
+		ST(0) = sv_2mortal(newSViv((IV) addr));
 
 SV *
 munmap(var)
