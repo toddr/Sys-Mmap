@@ -3,7 +3,7 @@
 BEGIN {
     use strict;
     use warnings;
-    use Test::More tests => 8;
+    use Test::More tests => 9;
 
     use_ok('Sys::Mmap');
 }
@@ -36,6 +36,12 @@ close FOO;
 substr($foo, 3, 1) = "Z";
 substr($temp_file_contents, 3, 1) = "Z";
 is($foo, $temp_file_contents, 'Foo can be altered in RW mode');
+munmap($foo);
+
+sysopen(FOO, $temp_file, O_RDWR) or die "$temp_file: $!\n";
+mmap($foo, 0, PROT_READ|PROT_WRITE, MAP_SHARED, FOO, 5);
+close FOO;
+is(substr($foo, 5, 1), '2', 'Offset handled');
 munmap($foo);
 
 sysopen(FOO, $temp_file, O_RDONLY) or die "$temp_file: $!\n";
