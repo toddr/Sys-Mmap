@@ -82,6 +82,30 @@ int arg;
 #else
             goto not_there;
 #endif
+        if (strEQ(name, "MAP_NORESERVE"))
+#ifdef MAP_NORESERVE
+            return MAP_NORESERVE;
+#else
+            goto not_there;
+#endif
+        if (strEQ(name, "MAP_HUGETLB"))
+#ifdef MAP_HUGETLB
+            return MAP_HUGETLB;
+#else
+            goto not_there;
+#endif
+        if (strEQ(name, "MAP_HUGE_2MB"))
+#ifdef MAP_HUGE_2MB
+            return MAP_HUGE_2MB;
+#else
+            goto not_there;
+#endif
+        if (strEQ(name, "MAP_HUGE_1GB"))
+#ifdef MAP_HUGE_1GB
+            return MAP_HUGE_1GB;
+#else
+            goto not_there;
+#endif
 	break;
     case 'P':
 	if (strEQ(name, "PROT_EXEC"))
