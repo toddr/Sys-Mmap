@@ -138,6 +138,7 @@ manually.
 
 The Mmap module exports the following constants into your namespace
     MAP_SHARED MAP_PRIVATE MAP_ANON MAP_ANONYMOUS MAP_FILE
+    MAP_HUGETLB MAP_HUGE_2MB MAP_HUGE_1GB 
     PROT_EXEC PROT_NONE PROT_READ PROT_WRITE
 
 Of the constants beginning MAP_, only MAP_SHARED and MAP_PRIVATE are
@@ -185,6 +186,9 @@ require Exporter;
 
 @EXPORT = qw(mmap munmap
 	     MAP_ANON MAP_ANONYMOUS MAP_FILE MAP_LOCKED MAP_PRIVATE MAP_SHARED MAP_NORESERVE
+    MAP_HUGETLB
+    MAP_HUGE_2MB
+    MAP_HUGE_1GB
 	     PROT_EXEC PROT_NONE PROT_READ PROT_WRITE);
 
 $VERSION = '0.17_01';
