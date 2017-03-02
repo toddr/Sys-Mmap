@@ -164,6 +164,9 @@ previously, or if it has since been reallocated by Perl.
 
 =head1 AUTHOR
 
+CowboyTim added support for MAP_NORESERVE, MAP_HUGETLB, MAP_HUGE_2MB, and MAP_HUGE_1GB.
+Thanks CowboyTim!
+
 Todd Rinaldo cleaned up code, modernized again, and merged in many fixes,
 2010-2011.
 
@@ -185,7 +188,7 @@ require Exporter;
     MAP_HUGE_1GB
 	     PROT_EXEC PROT_NONE PROT_READ PROT_WRITE);
 
-$VERSION = '0.17_01';
+$VERSION = '0.18';
 
 sub new {
 

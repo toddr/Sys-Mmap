@@ -1,3 +1,7 @@
+Scott Walters, Mar 1 2017 v0.18
+* MAP_HUGETLB MAP_HUGE_2MB MAP_HUGE_1GB, MAP_NORESERVE
+  thanks to CowboyTim
+
 Todd Rinaldo August 22 2014 v0.17_01
 * Track fixes in github now all issues are cleared from RT
   https://github.com/toddr/Sys-Mmap/issues
