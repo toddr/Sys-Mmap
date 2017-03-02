@@ -177,6 +177,7 @@ Malcolm Beattie, 21 June 1996.
 =cut
 
 use strict;
+use warnings;
 our ($VERSION, @ISA, @EXPORT, $AUTOLOAD);
 require Exporter;
 @ISA = qw(Exporter);
