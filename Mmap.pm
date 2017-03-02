@@ -188,7 +188,7 @@ require Exporter;
     MAP_HUGE_1GB
 	     PROT_EXEC PROT_NONE PROT_READ PROT_WRITE);
 
-$VERSION = '0.18';
+$VERSION = '0.19';
 
 sub new {
 

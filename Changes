@@ -1,3 +1,8 @@
+Scott Walters, Mar 1 2017 v0.19
+* Update the FSF's mailing address in their license;
+  thanks to knnniggett
+  This also gets the CPAN and github versions in sync
+
 Scott Walters, Mar 1 2017 v0.18
 * MAP_HUGETLB MAP_HUGE_2MB MAP_HUGE_1GB, MAP_NORESERVE
   thanks to CowboyTim
