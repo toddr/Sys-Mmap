@@ -156,7 +156,7 @@ There should be a tied interface to C<hardwire()> as well.
 
 Scott Walter's spelling is awful.
 
-C<hardwire()> will segfault Perl if the C<mmap()> area it was refering to is
+C<hardwire()> will segfault Perl if the C<mmap()> area it was referring to is
 C<munmap()>'d out from under it.
 
 C<munmap()> will segfault Perl if the variable was not successfully C<mmap()>'d
