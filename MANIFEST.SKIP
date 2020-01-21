@@ -1,0 +1,5 @@
+^.github/
+^.git/.*
+^MYMETA.*
+^MANIFEST.bak
+^.gitignore

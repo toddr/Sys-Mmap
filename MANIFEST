@@ -1,11 +1,13 @@
 Artistic
 Changes
 Copying
+Makefile
 Makefile.PL
 MANIFEST
-META.yml			Module meta-data (added by MakeMaker)
+MANIFEST.SKIP
 Mmap.pm
 Mmap.xs
 README
 t/mmap.t
 t/munmap_errors.t
+xt/author/pod.t
