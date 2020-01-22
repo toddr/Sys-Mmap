@@ -3,7 +3,7 @@
 BEGIN {
     use strict;
     use warnings;
-    use Test::More tests => 9;
+    use Test::More tests => 8;
 
     use_ok('Sys::Mmap');
 }
