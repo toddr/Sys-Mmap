@@ -3,7 +3,7 @@
 BEGIN {
     use strict;
     use warnings;
-    use Test::More tests => 8;
+    use Test::More tests => 9;
 
     use_ok('Sys::Mmap');
 }
@@ -31,6 +31,13 @@ munmap($foo);
 
 sysopen(FOO, $temp_file, O_RDWR) or die "$temp_file: $!\n";
 mmap($foo, 0, PROT_READ|PROT_WRITE, MAP_SHARED, FOO);
+close FOO;
+
+is($foo, $temp_file_contents, "Read ahead with MAP_POPULATE");
+munmap($foo);
+
+sysopen(FOO, $temp_file, O_RDWR) or die "$temp_file: $!\n";
+mmap($foo, 0, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_POPULATE, FOO);
 close FOO;
 
 substr($foo, 3, 1) = "Z";
