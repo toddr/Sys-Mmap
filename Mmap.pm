@@ -178,11 +178,15 @@ Malcolm Beattie, 21 June 1996.
 
 use strict;
 use warnings;
-our ($VERSION, @ISA, @EXPORT, $AUTOLOAD);
-require Exporter;
-@ISA = qw(Exporter);
 
-@EXPORT = qw(mmap munmap
+our $VERSION = '0.20';
+
+our $AUTOLOAD; # For sub AUTOLOAD
+
+require Exporter;
+our @ISA = qw(Exporter);
+
+our @EXPORT = qw(mmap munmap
 	     MAP_ANON MAP_ANONYMOUS MAP_FILE MAP_LOCKED MAP_PRIVATE MAP_SHARED MAP_NORESERVE
     MAP_POPULATE
     MAP_HUGETLB
@@ -190,7 +194,6 @@ require Exporter;
     MAP_HUGE_1GB
 	     PROT_EXEC PROT_NONE PROT_READ PROT_WRITE);
 
-$VERSION = '0.19';
 
 sub new {
 
